@@ -3,7 +3,8 @@ const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
 const equals = document.querySelector(".equals");
-const clear = document.querySelector(".clear");
+const clear = document.querySelector("#clear");
+const mystery = document.querySelector("#mystery");
 
 let clickedOperator;
 let firstClickedNumber;
@@ -47,7 +48,7 @@ function operate(operator, num1, num2) {
         case "-":
             subtract(num1, num2);
             break;
-        case "*":
+        case "x":
             multiply(num1, num2);
             break;
         case "/":
@@ -82,10 +83,10 @@ numbers.forEach(button => {
     button.addEventListener('click', () => {
         if (operatorClicked == false) {
             tempFirstNumber += String(button.id);
-            firstClickedNumber = parseInt(tempFirstNumber);
+            firstClickedNumber = +tempFirstNumber;
         } else {
             tempSecondNumber += String(button.id);
-            secondClickedNumber = parseInt(tempSecondNumber);
+            secondClickedNumber = +tempSecondNumber;
         }
     });
 });
@@ -93,9 +94,8 @@ numbers.forEach(button => {
 operators.forEach(button => {
     button.addEventListener('click', () => {
         if (operatorClicked == true && equalsClicked == false) {
-            clickedOperator = button.id;
             operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-            display.textContent = answer + button.id;
+            display.textContent = Number((answer).toFixed(6)) + button.id;
             firstClickedNumber = answer;
             tempSecondNumber = "";
             secondClickedNumber = "";
@@ -111,9 +111,13 @@ equals.addEventListener('click', () => {
     console.log("First number: " + firstClickedNumber);
     console.log("Second number: " + secondClickedNumber);
     operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-    display.textContent = answer;
+    display.textContent = Number((answer).toFixed(6));
 });
 
 clear.addEventListener('click', () => {
     reset();
+});
+
+mystery.addEventListener('click', () => {
+    display.textContent = "I'm Old Gregg!";
 });

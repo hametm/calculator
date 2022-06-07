@@ -7,26 +7,46 @@
     <title>Calculator</title>
     <script src="scripts.js" defer></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto&display=swap');
+    </style>
 </head>
 <body>
-    <div id="display"></div>
-    <div>
-        <button class="buttons numbers" id="0">0</button>
-        <button class="buttons numbers" id="1">1</button>
-        <button class="buttons numbers" id="2">2</button>
-        <button class="buttons numbers" id="3">3</button>
-        <button class="buttons numbers" id="4">4</button>
-        <button class="buttons numbers" id="5">5</button>
-        <button class="buttons numbers" id="6">6</button>
-        <button class="buttons numbers" id="7">7</button>
-        <button class="buttons numbers" id="8">8</button>
-        <button class="buttons numbers" id="9">9</button>
-        <button class="buttons operators" id="+">+</button>
-        <button class="buttons operators" id="-">-</button>
-        <button class="buttons operators" id="*">*</button>
-        <button class="buttons operators" id="/">/</button>
-        <button class="buttons equals" id="=">=</button>
-        <button class="buttons clear" id="clear">Clear</button>
+    <div id="calculator">
+        <div id="displayContainer">
+            <div id="display"></div>
+        </div>
+        <div id="buttonDisplay">
+            <div class="row" id="fifthRow">
+                <button class="buttons extra" id="clear">Clear</button>
+                <button class="buttons extra" id="mystery">Mystery</button>
+            </div>
+            <div class="row" id="fourthRow">
+                <button class="buttons numbers" id="7">7</button>
+                <button class="buttons numbers" id="8">8</button>
+                <button class="buttons numbers" id="9">9</button>
+                <button class="buttons operators rightColumn" id="/">/</button>
+            </div>
+            <div class="row" id="thirdRow">
+                <button class="buttons numbers" id="4">4</button>
+                <button class="buttons numbers" id="5">5</button>
+                <button class="buttons numbers" id="6">6</button>
+                <button class="buttons operators rightColumn" id="x">x</button>
+            </div>
+            <div class="row" id="secondRow">
+                <button class="buttons numbers" id="1">1</button>
+                <button class="buttons numbers" id="2">2</button>
+                <button class="buttons numbers" id="3">3</button>
+                <button class="buttons operators rightColumn" id="-">-</button>
+            </div>
+            <div class="row" id="firstRow">
+                <button class="buttons numbers" id="0">0</button>
+                <button class="buttons numbers" id=".">.</button>
+                <button class="buttons operators" id="+">+</button>
+                <button class="buttons equals rightColumn" id="=">=</button>
+            </div>
+        </div>
     </div>
+    <div id="footer">Made by Morgan</div>
 </body>
 </html>
