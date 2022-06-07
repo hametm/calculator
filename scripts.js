@@ -17,26 +17,18 @@ let answer = "";
 
 
 function add(num1, num2) {
-    console.log(num1 + num2);
     answer = num1 + num2;
 }
 
 function subtract(num1, num2) {
-    console.log(num1 - num2);
     answer = num1 - num2;
 }
 
 function multiply(num1, num2) {
-    console.log(num1 * num2);
     answer = num1 * num2;
 }
 
 function divide(num1, num2) {
-    if (num2 == 0) {
-        display.textContent = "ERROR DIVIDE BY ZERO";
-        return 0;
-    }
-    console.log(num1 / num2);
     answer = num1 / num2;
 }
 
@@ -70,12 +62,20 @@ function reset() {
     equalsClicked = false;
 }
 
+function resetOperator(button) {
+    firstClickedNumber = answer;
+    tempSecondNumber = "";
+    secondClickedNumber = "";
+    clickedOperator = button.id;
+}
+
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         if (equalsClicked) {
             reset();
+        } else {
+            display.textContent += String(button.id);
         }
-        display.textContent += String(button.id);
     });
 });
 
@@ -96,9 +96,7 @@ operators.forEach(button => {
         if (operatorClicked == true && equalsClicked == false) {
             operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
             display.textContent = Number((answer).toFixed(6)) + button.id;
-            firstClickedNumber = answer;
-            tempSecondNumber = "";
-            secondClickedNumber = "";
+            resetOperator(button);
         } else {
             clickedOperator = button.id;
             operatorClicked = !(operatorClicked);
@@ -108,10 +106,12 @@ operators.forEach(button => {
 
 equals.addEventListener('click', () => {
     equalsClicked = true;
-    console.log("First number: " + firstClickedNumber);
-    console.log("Second number: " + secondClickedNumber);
-    operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-    display.textContent = Number((answer).toFixed(6));
+    if (secondClickedNumber == 0) {
+        display.textContent = "ERROR";
+    } else {
+        operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
+        display.textContent = Number((answer).toFixed(6));
+    }
 });
 
 clear.addEventListener('click', () => {
