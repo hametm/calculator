@@ -1,6 +1,10 @@
-const buttons = document.querySelectorAll(".buttons");
 const display = document.getElementById("display");
+const buttons = document.querySelectorAll(".buttons");
+const operators = document.querySelectorAll(".operators");
+const numbers = document.querySelectorAll(".numbers");
 
+let clickedOperator;
+let clickedNumber;
 
 
 function add(num1, num2) {
@@ -38,8 +42,26 @@ function operate(operator, num1, num2) {
     }
 }
 
+function calculate() {
+    // operate(clickedOperator, )
+}
+
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         display.textContent = button.id;
+    });
+});
+
+operators.forEach(button => {
+    button.addEventListener('click', () => {
+        clickedOperator = button.id;
+        console.log(clickedOperator);
+    });
+});
+
+numbers.forEach(button => {
+    button.addEventListener('click', () => {
+        clickedNumber = button.id;
+        console.log(clickedNumber);
     });
 });
