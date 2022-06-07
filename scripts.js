@@ -2,24 +2,31 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
+const equals = document.querySelector(".equals");
 
 let clickedOperator;
-let clickedNumber;
+let firstClickedNumber;
+let secondClickedNumber;
+let isClicked = false;
 
 
 function add(num1, num2) {
+    console.log(num1 + num2);
     return num1 + num2;
 }
 
 function subtract(num1, num2) {
+    console.log(num1 - num2);
     return num1 - num2;
 }
 
 function multiply(num1, num2) {
+    console.log(num1 * num2);
     return num1 * num2;
 }
 
 function divide(num1, num2) {
+    console.log(num1 / num2);
     return num1 / num2;
 }
 
@@ -42,26 +49,31 @@ function operate(operator, num1, num2) {
     }
 }
 
-function calculate() {
-    // operate(clickedOperator, )
-}
-
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         display.textContent = button.id;
     });
 });
 
-operators.forEach(button => {
+numbers.forEach(button => {
     button.addEventListener('click', () => {
-        clickedOperator = button.id;
-        console.log(clickedOperator);
+        if (isClicked == false) {
+            firstClickedNumber = button.id;
+        } else {
+            secondClickedNumber = button.id;
+        }
     });
 });
 
-numbers.forEach(button => {
+operators.forEach(button => {
     button.addEventListener('click', () => {
-        clickedNumber = button.id;
-        console.log(clickedNumber);
+        isClicked = !(isClicked);
+        clickedOperator = button.id;
     });
+});
+
+equals.addEventListener('click', () => {
+    console.log("First number: " + firstClickedNumber);
+    console.log("Second number: " + secondClickedNumber);
+    operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
 });
