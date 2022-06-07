@@ -1,3 +1,8 @@
+const buttons = document.querySelectorAll(".buttons");
+const display = document.getElementById("display");
+
+
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -32,3 +37,9 @@ function operate(operator, num1, num2) {
             return "Error";
     }
 }
+
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        display.textContent = button.id;
+    });
+});
