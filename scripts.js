@@ -53,6 +53,16 @@ function operate(operator, num1, num2) {
     }
 }
 
+function reset() {
+    display.textContent = "";
+    tempFirstNumber = "";
+    tempSecondNumber = "";
+    firstClickedNumber = "";
+    secondClickedNumber = "";
+    clickedOperator = "";
+    operatorClicked = false;
+}
+
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         display.textContent = button.id;
@@ -85,8 +95,5 @@ equals.addEventListener('click', () => {
 });
 
 clear.addEventListener('click', () => {
-    display.textContent = "";
-    firstClickedNumber = "";
-    secondClickedNumber = "";
-    clickedOperator = "";
+    reset();
 });
