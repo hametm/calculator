@@ -3,11 +3,15 @@ const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
 const equals = document.querySelector(".equals");
+const clear = document.querySelector(".clear");
 
 let clickedOperator;
 let firstClickedNumber;
 let secondClickedNumber;
-let isClicked = false;
+let operatorClicked = false;
+let equalsClicked = false;
+let tempFirstNumber = "";
+let tempSecondNumber = "";
 
 
 function add(num1, num2) {
@@ -57,17 +61,19 @@ buttons.forEach(button => {
 
 numbers.forEach(button => {
     button.addEventListener('click', () => {
-        if (isClicked == false) {
-            firstClickedNumber = button.id;
+        if (operatorClicked == false) {
+            tempFirstNumber += String(button.id);
+            firstClickedNumber = parseInt(tempFirstNumber);
         } else {
-            secondClickedNumber = button.id;
+            tempSecondNumber += String(button.id);
+            secondClickedNumber = parseInt(tempSecondNumber);
         }
     });
 });
 
 operators.forEach(button => {
     button.addEventListener('click', () => {
-        isClicked = !(isClicked);
+        operatorClicked = !(operatorClicked);
         clickedOperator = button.id;
     });
 });
@@ -76,4 +82,11 @@ equals.addEventListener('click', () => {
     console.log("First number: " + firstClickedNumber);
     console.log("Second number: " + secondClickedNumber);
     operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
+});
+
+clear.addEventListener('click', () => {
+    display.textContent = "";
+    firstClickedNumber = "";
+    secondClickedNumber = "";
+    clickedOperator = "";
 });
