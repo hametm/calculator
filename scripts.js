@@ -1,4 +1,4 @@
-const display = document.getElementById("display");
+const display = document.getElementById("displayText");
 const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
@@ -7,12 +7,11 @@ const clear = document.querySelector("#clear");
 const mystery = document.querySelector("#mystery");
 
 let clickedOperator;
-let firstClickedNumber;
-let secondClickedNumber;
-let operatorClicked = false;
-let equalsClicked = false;
 let tempFirstNumber = "";
 let tempSecondNumber = "";
+let firstClickedNumber;
+let secondClickedNumber;
+let operatorIsClicked = false;
 let answer = "";
 
 
@@ -49,6 +48,7 @@ function operate(operator, num1, num2) {
         default:
             return "ERROR";
     }
+    displayAnswer();
 }
 
 function reset() {
@@ -58,8 +58,7 @@ function reset() {
     firstClickedNumber = "";
     secondClickedNumber = "";
     clickedOperator = "";
-    operatorClicked = false;
-    equalsClicked = false;
+    operatorIsClicked = false;
 }
 
 function resetOperator(button) {
@@ -69,19 +68,23 @@ function resetOperator(button) {
     clickedOperator = button.id;
 }
 
+function displayAnswer() {
+    display.textContent = Number((answer).toFixed(3));
+}
+
+function createMultipleDigitNumber(button) {
+    display.textContent += String(button.id);
+}
+
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        if (equalsClicked) {
-            reset();
-        } else {
-            display.textContent += String(button.id);
-        }
+        createMultipleDigitNumber(button);
     });
 });
 
 numbers.forEach(button => {
     button.addEventListener('click', () => {
-        if (operatorClicked == false) {
+        if (operatorIsClicked == false) {
             tempFirstNumber += String(button.id);
             firstClickedNumber = +tempFirstNumber;
         } else {
@@ -93,24 +96,23 @@ numbers.forEach(button => {
 
 operators.forEach(button => {
     button.addEventListener('click', () => {
-        if (operatorClicked == true && equalsClicked == false) {
+        if (operatorIsClicked == true) {
             operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-            display.textContent = Number((answer).toFixed(6)) + button.id;
+            display.textContent += button.id;
             resetOperator(button);
-        } else {
+        }
+        else {
             clickedOperator = button.id;
-            operatorClicked = !(operatorClicked);
+            operatorIsClicked = !(operatorIsClicked);
         }
     });
 });
 
 equals.addEventListener('click', () => {
-    equalsClicked = true;
     if (secondClickedNumber == 0) {
         display.textContent = "ERROR";
     } else {
         operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-        display.textContent = Number((answer).toFixed(6));
     }
 });
 
