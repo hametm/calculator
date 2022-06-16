@@ -1,18 +1,20 @@
-const display = document.getElementById("displayText");
+const display = document.querySelector("#bottomDisplay");
 const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
-const equals = document.querySelector(".equals");
+const equals = document.querySelector(".equalSign");
 const clear = document.querySelector("#clear");
 const mystery = document.querySelector("#mystery");
+const decimal = document.querySelector("#decimal");
 
 let clickedOperator;
 let tempFirstNumber = "";
 let tempSecondNumber = "";
-let firstClickedNumber;
-let secondClickedNumber;
+let firstNumber;
+let secondNumber;
 let operatorIsClicked = false;
 let answer = "";
+let decimalIsClicked = false;
 
 
 function add(num1, num2) {
@@ -55,17 +57,19 @@ function reset() {
     display.textContent = "";
     tempFirstNumber = "";
     tempSecondNumber = "";
-    firstClickedNumber = "";
-    secondClickedNumber = "";
+    firstNumber = "";
+    secondNumber = "";
     clickedOperator = "";
     operatorIsClicked = false;
+    decimalIsClicked = false;
 }
 
 function resetOperator(button) {
-    firstClickedNumber = answer;
+    firstNumber = answer;
     tempSecondNumber = "";
-    secondClickedNumber = "";
-    clickedOperator = button.id;
+    secondNumber = "";
+    clickedOperator = button.textContent;
+    decimalIsClicked = false;
 }
 
 function displayAnswer() {
@@ -73,7 +77,18 @@ function displayAnswer() {
 }
 
 function createMultipleDigitNumber(button) {
-    display.textContent += String(button.id);
+    // Make this a loop instead so you can get the decimal working?
+    display.textContent += String(button.textContent);
+    if (button.id == "decimal") {
+        decimalIsClicked = true;
+    }
+}
+
+function checkDecimal() {
+    if (decimalIsClicked) {
+        console.log("Decimal True");
+        // SOMETHING HERE
+    }
 }
 
 buttons.forEach(button => {
@@ -85,11 +100,11 @@ buttons.forEach(button => {
 numbers.forEach(button => {
     button.addEventListener('click', () => {
         if (operatorIsClicked == false) {
-            tempFirstNumber += String(button.id);
-            firstClickedNumber = +tempFirstNumber;
+            tempFirstNumber += String(button.textContent);
+            firstNumber = +tempFirstNumber;
         } else {
-            tempSecondNumber += String(button.id);
-            secondClickedNumber = +tempSecondNumber;
+            tempSecondNumber += String(button.textContent);
+            secondNumber = +tempSecondNumber;
         }
     });
 });
@@ -97,22 +112,22 @@ numbers.forEach(button => {
 operators.forEach(button => {
     button.addEventListener('click', () => {
         if (operatorIsClicked == true) {
-            operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
-            display.textContent += button.id;
+            operate(clickedOperator, +firstNumber, +secondNumber);
+            display.textContent += button.textContent;
             resetOperator(button);
         }
         else {
-            clickedOperator = button.id;
+            clickedOperator = button.textContent;
             operatorIsClicked = !(operatorIsClicked);
         }
     });
 });
 
 equals.addEventListener('click', () => {
-    if (secondClickedNumber == 0) {
+    if (secondNumber == 0) {
         display.textContent = "ERROR";
     } else {
-        operate(clickedOperator, +firstClickedNumber, +secondClickedNumber);
+        operate(clickedOperator, +firstNumber, +secondNumber);
     }
 });
 

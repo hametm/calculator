@@ -32,7 +32,7 @@ body {
     justify-content: center;
 }
 
-#display {
+#bottomDisplay {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,9 +43,6 @@ body {
     text-align: right;
     padding: 10px;
     background-color: rgb(94, 6, 138);
-}
-
-#displayText {
     color: white;
     font-size: 42px;
     font-family: 'Orbitron', sans-serif;
