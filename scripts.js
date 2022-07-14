@@ -1,11 +1,12 @@
-const display = document.querySelector("#bottomDisplay");
+const display = document.getElementById("bottomDisplay");
 const buttons = document.querySelectorAll(".buttons");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
-const equals = document.querySelector(".equalSign");
-const clear = document.querySelector("#clear");
-const mystery = document.querySelector("#mystery");
-const decimal = document.querySelector("#decimal");
+const equalsButton = document.querySelector(".equalSign");
+const clearButton = document.getElementById("clear");
+const mysteryButton = document.getElementById("mystery");
+const decimalButton = document.getElementById("decimal");
+const multiplyButton = document.getElementById("multiply");
 
 let clickedOperator;
 let tempFirstNumber = "";
@@ -14,8 +15,10 @@ let firstNumber;
 let secondNumber;
 let operatorIsClicked = false;
 let answer = "";
-let decimalIsClicked = false;
+let decimalCount = [];
+let errorIsShown = false;
 
+reset();
 
 function add(num1, num2) {
     answer = num1 + num2;
@@ -48,20 +51,97 @@ function operate(operator, num1, num2) {
             divide(num1, num2);
             break;
         default:
-            return "ERROR";
+            showError("ERROR");
+            break;
     }
     displayAnswer();
 }
 
+function displayAnswer() {
+    display.textContent = Number((answer).toFixed(3));
+}
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        clearZero();
+        clearError();
+        displayNumber(button);
+        if (button.classList.contains("numbers")) {
+            getNumbers(button);
+        }
+    });
+});
+
+function displayNumber(button) {
+    if (button.id === "decimal") {
+        decimalCount.push(button.id);
+    }
+    display.textContent += String(button.textContent);
+}
+
+function getNumbers(button) {
+    if (!operatorIsClicked) {
+        tempFirstNumber += String(button.textContent);
+        firstNumber = +tempFirstNumber;
+    } else {
+        tempSecondNumber += String(button.textContent);
+        secondNumber = +tempSecondNumber;
+    }
+}
+
+operators.forEach(button => {
+    button.addEventListener("click", () => {
+        if (operatorIsClicked) {
+            operate(clickedOperator, +firstNumber, +secondNumber);
+            display.textContent += button.textContent;
+            resetOperator(button);
+        }
+        else {
+            clickedOperator = button.textContent;
+            operatorIsClicked = !operatorIsClicked;
+        }
+    });
+});
+
+function showError(errorMessage) {
+    display.textContent = errorMessage;
+    errorIsShown = true;
+}
+
+function clearError() {
+    if (errorIsShown) reset();
+}
+
+function checkDecimal() {
+    if (decimalCount.length > 1) {
+        return true;
+    }
+}
+
+function clearZero() {
+    if (display.textContent === "0") {
+        display.textContent = "";
+    }
+}
+
+function checkZeroDenom() {
+    if (secondNumber === 0) {
+        showError("DIVISION ERR");
+    } else {
+        operate(clickedOperator, +firstNumber, +secondNumber);
+    }
+}
+
 function reset() {
-    display.textContent = "";
+    display.textContent = "0";
     tempFirstNumber = "";
     tempSecondNumber = "";
     firstNumber = "";
     secondNumber = "";
     clickedOperator = "";
     operatorIsClicked = false;
-    decimalIsClicked = false;
+    decimalCount = [];
+    errorIsShown = false;
 }
 
 function resetOperator(button) {
@@ -69,72 +149,31 @@ function resetOperator(button) {
     tempSecondNumber = "";
     secondNumber = "";
     clickedOperator = button.textContent;
-    decimalIsClicked = false;
+    decimalCount = [];
 }
 
-function displayAnswer() {
-    display.textContent = Number((answer).toFixed(3));
-}
-
-function createMultipleDigitNumber(button) {
-    // Make this a loop instead so you can get the decimal working?
-    display.textContent += String(button.textContent);
-    if (button.id == "decimal") {
-        decimalIsClicked = true;
-    }
-}
-
-function checkDecimal() {
-    if (decimalIsClicked) {
-        console.log("Decimal True");
-        // SOMETHING HERE
-    }
-}
-
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        createMultipleDigitNumber(button);
-    });
+equalsButton.addEventListener("click", () => {
+    checkZeroDenom();
 });
 
-numbers.forEach(button => {
-    button.addEventListener('click', () => {
-        if (operatorIsClicked == false) {
-            tempFirstNumber += String(button.textContent);
-            firstNumber = +tempFirstNumber;
-        } else {
-            tempSecondNumber += String(button.textContent);
-            secondNumber = +tempSecondNumber;
-        }
-    });
-});
-
-operators.forEach(button => {
-    button.addEventListener('click', () => {
-        if (operatorIsClicked == true) {
-            operate(clickedOperator, +firstNumber, +secondNumber);
-            display.textContent += button.textContent;
-            resetOperator(button);
-        }
-        else {
-            clickedOperator = button.textContent;
-            operatorIsClicked = !(operatorIsClicked);
-        }
-    });
-});
-
-equals.addEventListener('click', () => {
-    if (secondNumber == 0) {
-        display.textContent = "ERROR";
-    } else {
-        operate(clickedOperator, +firstNumber, +secondNumber);
-    }
-});
-
-clear.addEventListener('click', () => {
+clearButton.addEventListener("click", () => {
     reset();
 });
 
-mystery.addEventListener('click', () => {
-    display.textContent = "I'm Old Gregg!";
+mysteryButton.addEventListener("click", () => {
+    display.textContent = "U GOT THIS!";
+});
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        equalsButton.click();
+    }
+    if (e.key === "*") {
+        multiplyButton.click();
+    }
+    buttons.forEach(button => {
+        if (e.key === button.textContent) {
+            button.click();
+        }
+    });
 });
