@@ -4,7 +4,7 @@ const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
 const equalsButton = document.querySelector(".equalSign");
 const clearButton = document.getElementById("clear");
-const mysteryButton = document.getElementById("mystery");
+const thumbsUpButton = document.getElementById("thumbsUp");
 const decimalButton = document.getElementById("decimal");
 const multiplyButton = document.getElementById("multiply");
 
@@ -16,7 +16,7 @@ let secondNumber;
 let operatorIsClicked = false;
 let answer = "";
 let decimalCount = [];
-let errorIsShown = false;
+let messageIsShown = false;
 
 reset();
 
@@ -59,12 +59,9 @@ function operate(operator, num1, num2) {
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
-        clearZeroDisplay();
-        clearError();
-        if (button.id === "decimal") {
-            decimalCount.push(button.id);
-        }
-        if (checkDecimal() && button.id === "decimal") return 0;
+        clearMessage();
+        checkforDecimal(button);
+        if (checkForTwoDecimals() && button.id === "decimal") return 0;
         displayNumber(button);
         if (button.classList.contains("numbers")) {
             getNumbers(button);
@@ -99,23 +96,33 @@ function operateNumbers(button) {
 }
 
 function displayNumber(button) {
-    display.textContent += String(button.textContent);
+    if (button.classList.contains("numbers") && display.textContent === "0" || messageIsShown) {
+        display.textContent = String(button.textContent);
+    } else {
+        display.textContent += String(button.textContent);
+    }
 }
 
 function displayAnswer() {
     display.textContent = Number((answer).toFixed(3));
 }
 
+function checkforDecimal(button) {
+    if (button.id === "decimal") {
+        decimalCount.push(button.id);
+    }
+}
+
 function showError(errorMessage) {
     display.textContent = errorMessage;
-    errorIsShown = true;
+    messageIsShown = true;
 }
 
-function clearError() {
-    if (errorIsShown) reset();
+function clearMessage() {
+    if (messageIsShown) reset();
 }
 
-function checkDecimal() {
+function checkForTwoDecimals() {
     if (decimalCount.length > 1) {
         return true;
     }
@@ -123,12 +130,6 @@ function checkDecimal() {
 
 function resetDecimal() {
     decimalCount.length = 0;
-}
-
-function clearZeroDisplay() {
-    if (display.textContent === "0") {
-        display.textContent = "";
-    }
 }
 
 function checkZeroDenom() {
@@ -147,7 +148,7 @@ function reset() {
     clickedOperator = "";
     operatorIsClicked = false;
     decimalCount.length = 0;
-    errorIsShown = false;
+    messageIsShown = false;
 }
 
 function resetOperator(button) {
@@ -167,8 +168,9 @@ clearButton.addEventListener("click", () => {
     reset();
 });
 
-mysteryButton.addEventListener("click", () => {
+thumbsUpButton.addEventListener("click", () => {
     display.textContent = "U GOT THIS!";
+    messageIsShown = true;
 });
 
 document.addEventListener("keydown", (e) => {
