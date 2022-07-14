@@ -57,27 +57,24 @@ function operate(operator, num1, num2) {
     displayAnswer();
 }
 
-function displayAnswer() {
-    display.textContent = Number((answer).toFixed(3));
-}
-
 buttons.forEach(button => {
     button.addEventListener("click", () => {
-        clearZero();
+        clearZeroDisplay();
         clearError();
+        if (button.id === "decimal") {
+            decimalCount.push(button.id);
+        }
+        if (checkDecimal() && button.id === "decimal") return 0;
         displayNumber(button);
         if (button.classList.contains("numbers")) {
             getNumbers(button);
         }
+        if (button.classList.contains("operators")) {
+            resetDecimal();
+            operateNumbers(button);
+        }
     });
 });
-
-function displayNumber(button) {
-    if (button.id === "decimal") {
-        decimalCount.push(button.id);
-    }
-    display.textContent += String(button.textContent);
-}
 
 function getNumbers(button) {
     if (!operatorIsClicked) {
@@ -89,19 +86,25 @@ function getNumbers(button) {
     }
 }
 
-operators.forEach(button => {
-    button.addEventListener("click", () => {
-        if (operatorIsClicked) {
-            operate(clickedOperator, +firstNumber, +secondNumber);
-            display.textContent += button.textContent;
-            resetOperator(button);
-        }
-        else {
-            clickedOperator = button.textContent;
-            operatorIsClicked = !operatorIsClicked;
-        }
-    });
-});
+function operateNumbers(button) {
+    if (operatorIsClicked) {
+        operate(clickedOperator, +firstNumber, +secondNumber);
+        display.textContent += button.textContent;
+        resetOperator(button);
+    }
+    else {
+        clickedOperator = button.textContent;
+        operatorIsClicked = !operatorIsClicked;
+    }
+}
+
+function displayNumber(button) {
+    display.textContent += String(button.textContent);
+}
+
+function displayAnswer() {
+    display.textContent = Number((answer).toFixed(3));
+}
 
 function showError(errorMessage) {
     display.textContent = errorMessage;
@@ -118,7 +121,11 @@ function checkDecimal() {
     }
 }
 
-function clearZero() {
+function resetDecimal() {
+    decimalCount.length = 0;
+}
+
+function clearZeroDisplay() {
     if (display.textContent === "0") {
         display.textContent = "";
     }
@@ -127,9 +134,8 @@ function clearZero() {
 function checkZeroDenom() {
     if (secondNumber === 0) {
         showError("DIVISION ERR");
-    } else {
-        operate(clickedOperator, +firstNumber, +secondNumber);
-    }
+        return true;
+    } 
 }
 
 function reset() {
@@ -140,7 +146,7 @@ function reset() {
     secondNumber = "";
     clickedOperator = "";
     operatorIsClicked = false;
-    decimalCount = [];
+    decimalCount.length = 0;
     errorIsShown = false;
 }
 
@@ -149,11 +155,12 @@ function resetOperator(button) {
     tempSecondNumber = "";
     secondNumber = "";
     clickedOperator = button.textContent;
-    decimalCount = [];
+    decimalCount.length = 0;
 }
 
 equalsButton.addEventListener("click", () => {
-    checkZeroDenom();
+    if (checkZeroDenom()) return 0;
+    operate(clickedOperator, +firstNumber, +secondNumber);
 });
 
 clearButton.addEventListener("click", () => {
