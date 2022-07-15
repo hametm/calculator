@@ -1,5 +1,5 @@
-const display = document.getElementById("bottomDisplay");
-const buttons = document.querySelectorAll(".buttons");
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("button");
 const operators = document.querySelectorAll(".operators");
 const numbers = document.querySelectorAll(".numbers");
 const equalsButton = document.querySelector(".equalSign");
