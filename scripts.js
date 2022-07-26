@@ -108,9 +108,7 @@ function displayAnswer() {
 }
 
 function checkforDecimal(button) {
-    if (button.id === "decimal") {
-        decimalCount.push(button.id);
-    }
+    if (button.id === "decimal") decimalCount.push(button.id);
 }
 
 function showError(errorMessage) {
@@ -123,9 +121,7 @@ function clearMessage() {
 }
 
 function checkForTwoDecimals() {
-    if (decimalCount.length > 1) {
-        return true;
-    }
+    if (decimalCount.length > 1) return true;
 }
 
 function resetDecimal() {
@@ -170,6 +166,7 @@ clearButton.addEventListener("click", () => {
 
 thumbsUpButton.addEventListener("click", () => {
     display.textContent = "U GOT THIS!";
+    display.style.fontSize = "2rem";
     messageIsShown = true;
 });
 
