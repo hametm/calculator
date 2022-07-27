@@ -172,7 +172,7 @@ clearButton.addEventListener("click", () => {
 
 thumbsUpButton.addEventListener("click", () => {
     display.textContent = "U GOT THIS!";
-    display.style.fontSize = "2rem";
+    display.style.fontSize = "1.7rem";
     messageIsShown = true;
 });
 

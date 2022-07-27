@@ -107,6 +107,10 @@ footer {
         width: max(5vw, 50px);
         height: max(5vw, 50px);
     }
+
+    #display {
+        font-size: 2rem;
+    }
 }
 
 @media (min-width: 481px) and (max-width: 1180px) {
