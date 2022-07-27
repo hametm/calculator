@@ -96,6 +96,7 @@ function operateNumbers(button) {
 }
 
 function displayNumber(button) {
+    resetFontSize();
     if (button.classList.contains("numbers") && display.textContent === "0" || messageIsShown) {
         display.textContent = String(button.textContent);
     } else {
@@ -105,6 +106,10 @@ function displayNumber(button) {
 
 function displayAnswer() {
     display.textContent = Number((answer).toFixed(3));
+}
+
+function resetFontSize() {
+    display.style.fontSize = "2.5rem";
 }
 
 function checkforDecimal(button) {
@@ -145,6 +150,7 @@ function reset() {
     operatorIsClicked = false;
     decimalCount.length = 0;
     messageIsShown = false;
+    display.style.fontSize = "2.5rem";
 }
 
 function resetOperator(button) {
